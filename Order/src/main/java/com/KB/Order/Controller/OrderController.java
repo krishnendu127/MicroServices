@@ -2,7 +2,6 @@ package com.KB.Order.Controller;
 
 import com.KB.Order.DTO.OrderRequest;
 import com.KB.Order.DTO.OrderResponse;
-import com.KB.Order.Model.Order;
 import com.KB.Order.Service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

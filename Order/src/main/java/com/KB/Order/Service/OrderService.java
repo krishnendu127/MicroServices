@@ -1,5 +1,6 @@
 package com.KB.Order.Service;
 
+import com.KB.Order.Client.InventoryClient;
 import com.KB.Order.DTO.OrderRequest;
 import com.KB.Order.DTO.OrderResponse;
 import com.KB.Order.Model.Order;
@@ -18,9 +19,16 @@ import java.util.UUID;
 @Transactional
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final InventoryClient inventoryClient;
     public void placeOrder(OrderRequest orderRequest){
-        Order order=mapToOrder(orderRequest);
-        orderRepository.save(order);
+        boolean isInStock=inventoryClient.isInStock(orderRequest.skuCode(),orderRequest.quantity());
+        if(isInStock) {
+            Order order = mapToOrder(orderRequest);
+            orderRepository.save(order);
+        }
+        else{
+            throw new RuntimeException("Product with SkuCode"+orderRequest.skuCode()+"is out of stock");
+        }
     }
     public List<OrderResponse> getAllOrders(){
         return orderRepository.findAll()
